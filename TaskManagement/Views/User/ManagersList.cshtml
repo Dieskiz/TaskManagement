@@ -1,0 +1,108 @@
+﻿@model IEnumerable<User> 
+@{
+    ViewData["Title"] = "ManagersList";
+}
+
+@if (TempData["success"] != null)
+{
+    <div id="alertContainer" class="alert alert-success">
+        @TempData["success"]
+    </div>
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Managers List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="User" asp-action="AddManager" class="btn btn-primary">
+               Add New Manager
+            </a>
+        </div>
+    </div>
+</div>
+<br />
+<table class="table table-bordered table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                Username 
+            </th>
+            <th>
+                Password
+            </th>
+            <th>
+                Role
+            </th>   
+            <th>
+                Department
+            </th> 
+            <th>
+                Birthday
+            </th>
+            <th>
+                PhoneNumber
+            </th>
+            <th>
+                Email
+            </th>            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var obj in Model)
+        {
+            <tr>
+                <td width="30%">
+                    @obj.Username
+                </td>
+                <td width="30%">
+                    @obj.Password
+                </td>
+                <td width="30%">
+                    @obj.Role
+                </td>
+                <td width="30%">
+                 @if (obj.Department != null)
+                    {
+                        @obj.Department.DepartmentName
+                    }
+                    else
+                    {
+                        <span>N/A</span>                       
+                    }
+                </td>
+                <td width="30%">
+                    @obj.Birthday
+                </td>
+                <td width="30%">
+                    @obj.PhoneNumber
+                </td>
+                <td width="30%">
+                    @obj.Email
+                </td>                              
+                <td>
+                    <div class="w-75 btn-group" role="group">
+                        <a asp-controller="User" asp-action="EditManager" asp-route-id="@obj.UserId" class="btn btn-primary mx-2">Edit</a>
+                        <a asp-controller="User" asp-action="DeleteManager" asp-route-id="@obj.UserId" class="btn btn-danger mx-2">Delete</a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    // Wait for the page to be fully loaded
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get the alert container
+        var alertContainer = document.getElementById("alertContainer");
+
+        // Hide the alert after 5 seconds
+        setTimeout(function() {
+            alertContainer.style.display = "none";
+        }, 5000); // 5000 milliseconds = 5 seconds
+    });
+</script>
+

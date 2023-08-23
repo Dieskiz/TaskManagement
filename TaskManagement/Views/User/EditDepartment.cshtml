@@ -1,0 +1,42 @@
+﻿@model Department
+
+<form method="post" asp-action="EditDepartment">
+    <input type="hidden" asp-for="DepartmentId" />
+    <input type="hidden" asp-for="UserId" />
+    <div class="border p-3 mt-4">
+        <div class="mb-3">
+            <label asp-for="DepartmentName">Department</label>
+            <input asp-for="DepartmentName" class="form-control" />
+            <span asp-validation-for="DepartmentName" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+        <label asp-for="UserId">Manager</label>
+       
+                    <select class="form-select" asp-for="UserId">
+                        <option>@ViewBag.AssignedManagerName</option>
+                        @foreach (var manager in ViewBag.AllManagers)
+                        {
+
+                            if (@manager.Username == @ViewBag.AssignedManagerName)
+                            {
+                                continue;
+                            }
+
+                            <option value="@manager.UserId">@manager.Username</option>
+                        }
+                    </select>
+
+                <span asp-validation-for="UserId" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:150px">Update</button>
+        <a asp-asp-controller="User" asp-action="DepartmentsList" class="btn btn-secondary" style="width:150px">
+            Back to List
+        </a>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+        <partial name ="_ValidationScriptsPartial" /> /*for the client side validation*/
+    }
+}

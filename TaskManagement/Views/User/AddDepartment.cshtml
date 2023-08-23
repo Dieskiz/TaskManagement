@@ -1,0 +1,51 @@
+﻿@model TaskManagement.DTO.DepartmentDTO
+
+<form method="post" asp-action="AddDepartment">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Add new Department </h2>
+            <hr />
+        </div>
+        <div class="mb-3">
+            <label asp-for="DepartmentName"></label>
+            <input asp-for="DepartmentName" class="form-control" />
+            <span asp-validation-for="DepartmentName" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+        <label asp-for="UserId">Manager</label>
+        @if (ViewBag.AllManagers.Count == 0)
+                {
+                    <input disabled class="form-control" value="No managers available to assign to department"/>
+                }
+                else 
+                {
+                    <select class="form-select" asp-for="UserId">
+                        <option>Select a Manager</option>
+                        @foreach (var manager in ViewBag.AllManagers)
+                        {
+
+                            if (@manager.Username == @ViewBag.AssignedManagerName)
+                            {
+                                continue;
+                            }
+
+                            <option value="@manager.UserId">@manager.Username</option>
+                        }
+                    </select>
+                }
+                
+                <span asp-validation-for="UserId" class="text-danger"></span>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width:150px">Add</button>
+        <a asp-asp-controller="User" asp-action="DepartmentsList" class="btn btn-secondary" style="width:150px">
+            Back to List
+        </a>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+        <partial name ="_ValidationScriptsPartial" /> /*for the client side validation*/
+    }
+}

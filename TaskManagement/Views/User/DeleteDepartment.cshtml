@@ -1,0 +1,27 @@
+﻿@model Department
+
+<form method="post" asp-action="DeleteDepartment">
+    <input type="hidden" asp-for="DepartmentId" />
+    <input type="hidden" asp-for="UserId" />
+    <div class="border p-3 mt-4">
+        
+        <div class="mb-3">
+            <label asp-for="DepartmentName">Department</label>
+            <input asp-for="DepartmentName" disabled class="form-control" />            
+        </div>
+        <div class="mb-3">
+            <label asp-for="User">Manager</label>
+            <input disabled class="form-control" value="@ViewBag.AssignedManagerName"/>
+        </div>
+        <button type="submit" class="btn btn-danger" style="width:150px">Delete</button>
+        <a asp-asp-controller="User" asp-action="DepartmentsList" class="btn btn-secondary" style="width:150px">
+            Back to List
+        </a>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+        <partial name ="_ValidationScriptsPartial" /> /*for the client side validation*/
+    }
+}
