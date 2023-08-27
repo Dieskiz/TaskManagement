@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TaskManagement.Data;
 using TaskManagement.DTO;
@@ -12,12 +13,14 @@ namespace TaskManagement.controllers
         private readonly ApplicationDbContext _db;
         private readonly IManagerMapper _managerMapper;
         private readonly IDepartmentMapper _departmentMapper;
+        private readonly IEmployeeMapper _employeeMapper;
 
-        public UserController(ApplicationDbContext db, IManagerMapper managerMapper, IDepartmentMapper departmentMapper)
+        public UserController(ApplicationDbContext db, IManagerMapper managerMapper, IDepartmentMapper departmentMapper, IEmployeeMapper employeeMapper)
         {
             _db = db;
             _managerMapper = managerMapper;
-            _departmentMapper = departmentMapper; 
+            _departmentMapper = departmentMapper;
+            _employeeMapper = employeeMapper;
         }
 
         [HttpGet]
@@ -161,7 +164,6 @@ namespace TaskManagement.controllers
             return View(departmentDTO);
         }
 
-
         [HttpGet]
         public IActionResult EditDepartment(int? id)
             {
@@ -183,7 +185,6 @@ namespace TaskManagement.controllers
             ViewBag.AssignedManagerName = AssignedManagerName;
             return View(departmentfromdb);
         }
-
 
         [HttpPost]
         public IActionResult EditDepartment(DepartmentDTO departmentDTO)
@@ -229,5 +230,47 @@ namespace TaskManagement.controllers
             return RedirectToAction("DepartmentsList");
         }
 
+        [HttpGet]
+        public IActionResult EmployeesList()
+        {
+            if (HttpContext.Session.GetString("Role") == "Manager")
+            {
+                var loggedInManagerId = HttpContext.Session.GetInt32("UserId");
+                var ManagerDepartmentName = _db.User.Where(m => m.UserId == loggedInManagerId)
+                                                        .Select(d => d.Department.DepartmentName)
+                                                        .FirstOrDefault();
+
+                ViewBag.ManagerDepartmentName = ManagerDepartmentName;
+
+                var Employees = _db.User.Where(a => a.Role == "Employee").ToList();
+                return View(Employees);
+            }
+            return RedirectToAction("Login", "Account");
+        }
+
+        [HttpGet]
+        public IActionResult AddEmployee()
+        {
+            var loggedInManagerId = HttpContext.Session.GetInt32("UserId");
+            var ManagerDepartmentName = _db.User.Where(m => m.UserId == loggedInManagerId)
+                                                    .Select(d => d.Department.DepartmentName)
+                                                    .FirstOrDefault();
+            
+            ViewBag.ManagerDepartmentName = ManagerDepartmentName;
+            return View();            
+        }
+
+        [HttpPost]
+        public IActionResult AddEmployee(EmployeeDTO employeeDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.User.Add(_employeeMapper.Map(employeeDTO));
+                _db.SaveChanges();
+                TempData["success"] = "A new Employee was added successfully";
+                return RedirectToAction("EmployeesList");
+            }
+            return View(employeeDTO);
+        }
     }
 }

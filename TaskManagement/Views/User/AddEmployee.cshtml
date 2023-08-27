@@ -1,0 +1,58 @@
+﻿@model User
+
+<form method="post" asp-action="AddEmployee">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Add new Employee </h2>
+            <hr />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Username"></label>
+            <input asp-for="Username" class="form-control" />
+            <span asp-validation-for="Username" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Role"></label>
+            <input asp-for="Role" disabled class="form-control" value="Employee"/>
+            <span asp-validation-for="Role" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+             <label asp-for="Department.DepartmentName">Department</label>
+            @if (@ViewBag.ManagerDepartmentName != null)
+            {
+                <input asp-for="Department.DepartmentName" disabled class="form-control" value="@ViewBag.ManagerDepartmentName"/>                
+            }
+            else
+            {
+                <input disabled class="form-control" value="N/A"/>
+            }
+        </div>
+        <div class="mb-3">
+            <label asp-for="Birthday"></label>
+            <input asp-for="Birthday" class="form-control" />
+            <span asp-validation-for="Birthday" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="PhoneNumber"></label>
+            <input asp-for="PhoneNumber" class="form-control" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:150px">Add</button>
+        <a asp-asp-controller="User" asp-action="EmployeesList" class="btn btn-secondary" style="width:150px">
+            Back to List
+        </a>
+    </div>
+</form>
+
+@section Scripts
+{
+    @{
+        <partial name ="_ValidationScriptsPartial" /> /*for the client side validation*/
+
+    }    
+}

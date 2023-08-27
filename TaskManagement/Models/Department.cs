@@ -11,8 +11,6 @@ namespace TaskManagement.Models
         public string DepartmentName { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
-
-
     }
 
 }

@@ -35,6 +35,7 @@ namespace TaskManagement.Controllers
             if (user != null)
             {
                 HttpContext.Session.SetString("Role", user.Role);
+                HttpContext.Session.SetInt32("UserId", user.UserId);
                 return RedirectToAction("Index", "Home");
             }
             //Password is incorrect

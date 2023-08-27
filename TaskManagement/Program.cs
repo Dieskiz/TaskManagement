@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<IEmployeeMapper, EmployeeMapper>();
 builder.Services.AddScoped<IManagerMapper, ManagerMapper>();
 builder.Services.AddScoped<IDepartmentMapper, DepartmentMapper>();
 builder.Services.AddSession(options =>
@@ -42,6 +43,7 @@ app.UseSession(new SessionOptions()
     IOTimeout = TimeSpan.FromDays(8),
 
 });
+
 
 app.UseAuthorization();
 app.UseSession();
