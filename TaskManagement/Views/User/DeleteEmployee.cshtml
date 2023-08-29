@@ -1,6 +1,6 @@
 ﻿@model User
 
-<form method="post" asp-action="DeleteManager">
+<form method="post" asp-action="DeleteEmployee">
     <input type="hidden" asp-for="UserId" />
     <div class="border p-3 mt-4">
         <div class="mb-3">
@@ -9,19 +9,8 @@
         </div>
         <div class="mb-3">
             <label asp-for="Role"></label>
-            <input asp-for="Role" disabled class="form-control" value="Manager"/>            
-        </div>
-        <div class="mb-3">
-             <label asp-for="Department"></label>
-            @if (@ViewBag.AssignedDepartmentName != null)
-            {
-                <input disabled class="form-control" value="@ViewBag.AssignedDepartmentName"/>
-            }
-            else
-            {
-                 <input disabled class="form-control" value="N/A"/>    
-            }
-        </div>
+            <input asp-for="Role" disabled class="form-control" value="Employee"/>            
+        </div>        
         <div class="mb-3">
             <label asp-for="Birthday"></label>
             <input asp-for="Birthday" disabled class="form-control" />
@@ -35,7 +24,7 @@
             <input asp-for="Email" disabled class="form-control" />           
         </div> 
         <button type="submit" class="btn btn-danger" style="width:150px">Delete</button>
-        <a asp-asp-controller="User" asp-action="ManagersList" class="btn btn-secondary" style="width:150px">
+        <a asp-asp-controller="User" asp-action="EmployeesList" class="btn btn-secondary" style="width:150px">
             Back to List
         </a>
     </div>

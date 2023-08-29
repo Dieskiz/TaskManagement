@@ -299,5 +299,35 @@ namespace TaskManagement.controllers
             return RedirectToAction("EmployeesList");
         }
 
+        [HttpGet]
+        public IActionResult DeleteEmployee(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            var Employeefromdb = _db.User.Find(id);
+
+            if (Employeefromdb == null)
+            {
+                return NotFound();
+            }            
+
+            return View(Employeefromdb);
+        }
+
+        [HttpPost, ActionName("DeleteEmployee")]
+        public IActionResult DeleteEmployeePOST(int? id)
+        {
+            var obj = _db.User.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            _db.User.Remove(obj);
+            _db.SaveChanges();
+            TempData["success"] = "Employee deleted successfully";
+            return RedirectToAction("EmployeesList");
+        }
     }
 }
