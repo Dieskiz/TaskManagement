@@ -272,5 +272,32 @@ namespace TaskManagement.controllers
             }
             return View(employeeDTO);
         }
+
+        [HttpGet]
+        public IActionResult EditEmployee(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            var Employeefromdb = _db.User.Find(id);
+
+            if (Employeefromdb== null)
+            {
+                return NotFound();
+            }
+
+            return View(Employeefromdb);
+        }
+
+        [HttpPost]
+        public IActionResult EditEmployee(EmployeeDTO employeeDTO)
+        {
+            _db.User.Update(_employeeMapper.Map(employeeDTO));
+            _db.SaveChanges();
+            TempData["success"] = "Employee updated successfully";
+            return RedirectToAction("EmployeesList");
+        }
+
     }
 }
